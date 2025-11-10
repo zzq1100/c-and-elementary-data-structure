@@ -66,3 +66,14 @@ int TreeHeight(BTNode* root)
 
 	return leftHeight > rightHeight ? leftHeight : rightHeight;
 }
+
+int TreeLevelKSize(BTNode* root, int k)
+{
+	if (root == NULL)
+		return 0;
+	
+	if (k == 1)
+		return 1;
+
+	return TreeLevelKSize(root->left, k - 1) + TreeLevelKSize(root->right, k - 1);
+}
