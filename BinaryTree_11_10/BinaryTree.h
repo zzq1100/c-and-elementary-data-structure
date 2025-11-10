@@ -77,3 +77,16 @@ int TreeLevelKSize(BTNode* root, int k)
 
 	return TreeLevelKSize(root->left, k - 1) + TreeLevelKSize(root->right, k - 1);
 }
+
+BTNode* TreeFind(BTNode* root, BTDataType x)
+{
+	if (root == NULL)
+		return;
+	
+	if (root->val == x)
+		return root;
+
+	TreeFind(root->left, x);
+	TreeFind(root->right, x);
+
+}

@@ -18,6 +18,10 @@ int main()
 	printf("\n");
 	printf("TreeSize: %d\n", TreeSize(root));
 	printf("TreeLeafSize: %d\n", TreeLeafSize(root));
-
+	BTNode* find = TreeFind(root, 8);
+	if (find == NULL)
+		printf("NO\n");
+	else
+		printf("Yes\n");
 	return 0;
 }
