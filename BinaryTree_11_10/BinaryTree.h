@@ -86,7 +86,13 @@ BTNode* TreeFind(BTNode* root, BTDataType x)
 	if (root->val == x)
 		return root;
 
-	TreeFind(root->left, x);
-	TreeFind(root->right, x);
-
+	BTNode* _left = TreeFind(root->left, x);
+	if (_left != NULL)
+		return _left;
+	
+	BTNode* _right = TreeFind(root->right, x);
+	if (_right != NULL)
+		return _right;
+	
+	return NULL;
 }
