@@ -17,78 +17,80 @@ void Print(int* arr, int n)
 }
 
 
-//void QuickSort(int* arr, int left, int right)
-//{
-//	if (left >= right)
-//		return;
-//	int key = left;
-//	int begin = left, end = right;
-//	while (begin < end)
-//	{
-//		while (begin < end && arr[end] >= arr[key])
-//		{
-//			end--;
-//		}
-//		while (begin < end && arr[begin] <= arr[key])
-//		{
-//			begin++;
-//		}
-//		
-//		swap(&arr[begin], &arr[end]);
-//	}
-//	swap(&arr[key], &arr[begin]);
-//	key = begin;
-//	QuickSort(arr, left, key - 1);
-//	QuickSort(arr, key + 1, right);
-//}
+void QuickSort(int* arr, int left, int right)
+{
+	if (left >= right)
+		return;
+	int key = left;
+	int begin = left, end = right;
+	while (begin < end)
+	{
+		while (begin < end && arr[end] >= arr[key])
+		{
+			end--;
+		}
+		while (begin < end && arr[begin] <= arr[key])
+		{
+			begin++;
+		}
+		
+		swap(&arr[begin], &arr[end]);
+	}
+	swap(&arr[key], &arr[begin]);
+	key = begin;
+	QuickSort(arr, left, key - 1);
+	QuickSort(arr, key + 1, right);
+}
 
-//void InsertSort(int* arr, int n)
-//{
-//	for (int i = 0; i < n - 1; i++)
-//	{
-//		int end = i;
-//		int tmp = arr[end + 1];
-//		while (end >= 0)
-//		{
-//			if (arr[end] > tmp)
-//			{
-//				arr[end + 1] = arr[end];
-//				end--;
-//			}
-//			else
-//				break;
-//		}
-//		arr[end + 1] = tmp;
-//	}
-//}
+void InsertSort(int* arr, int n)
+{
+	for (int i = 0; i <= n - 2; i++) // 遍历未排序部分，i 指向已排序部分的最后一个元素
+	{
+		int end = i;                 // 已排序部分的末尾下标
+		int tmp = arr[end + 1];      // 取出待插入元素（未排序部分的第一个）
+		
+		// 从后向前查找插入位置
+		while (end >= 0)
+		{
+			if (arr[end] > tmp)      // 如果当前元素比待插入元素大
+			{
+				arr[end + 1] = arr[end];  // 向后移动一位
+				end--;                    // 继续向前比较
+			}
+			else
+				break;                    // 找到合适位置，停止查找
+		}
+		arr[end + 1] = tmp;               // 将待插入元素放到正确位置
+	}
+}
 //
-//void ShellSort(int* arr, int n)
-//{
-//	int gap = n;
-//	while (gap > 1)
-//	{
-//		gap = gap / 3 + 1;
-//		for (int i = 0; i < gap; i++)
-//		{
-//			for (int j = i; j <= n - 1 - gap; j += gap)
-//			{
-//				int end = j;
-//				int tmp = arr[end + gap];
-//				while (end >= 0)
-//				{
-//					if (arr[end] > arr[end + gap])
-//					{
-//						arr[end + gap] = arr[end];
-//						end -= gap;
-//					}
-//					else
-//						break;
-//				}
-//				arr[end + gap] = tmp;
-//			}
-//		}
-//	}
-//}
+void ShellSort(int* arr, int n)
+{
+	int gap = n;
+	while (gap > 1)
+	{
+		gap = gap / 3 + 1;
+		for (int i = 0; i < gap; i++)
+		{
+			for (int j = i; j <= n - 1 - gap; j += gap)
+			{
+				int end = j;
+				int tmp = arr[end + gap];
+				while (end >= 0)
+				{
+					if (arr[end] > arr[end + gap])
+					{
+						arr[end + gap] = arr[end];
+						end -= gap;
+					}
+					else
+						break;
+				}
+				arr[end + gap] = tmp;
+			}
+		}
+	}
+}
 //
 //void SelectSort(int* arr, int n)
 //{
@@ -193,5 +195,32 @@ void SelectSort(int* arr, int n)
 		swap(&arr[end], &arr[max]);
 		begin++;
 		end--;
+	}
+}
+void ShellSort(int* arr, int n)
+{
+	int gap = n;
+	while (gap > 1)
+	{
+		gap = gap / 3 + 1;
+		for (int i = 0; i < gap; i++)
+		{
+			for (int j = i; j <= n - 1 - gap; j += gap)
+			{
+				int end = j;
+				int tmp = arr[end + gap];
+				while (end >= 0)
+				{
+					if (arr[end] > arr[end + gap])
+					{
+						arr[end + gap] = arr[end];
+						end -= gap;
+					}
+					else
+						break;
+				}
+				arr[end + gap] = tmp;
+			}
+		}
 	}
 }
