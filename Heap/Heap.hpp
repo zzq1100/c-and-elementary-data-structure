@@ -11,6 +11,8 @@ public:
     ~Heap();
 
     void HeapPush(HDataType x);
+    void HeapPop();
+    int HeapSize();
     HDataType HeapPrint(int i);
 
 
@@ -19,6 +21,7 @@ public:
 
 private:
     void AdjustUp(HDataType *data, int size);
+    void AdjustDown(HDataType *data, int size);
 
 private:
     HDataType *_data;

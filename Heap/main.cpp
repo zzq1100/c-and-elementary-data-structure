@@ -16,6 +16,16 @@ int main()
     {
         cout << hp.HeapPrint(i) << " ";
     }
+    cout << endl;
+    for (int i = 0; i < (sizeof(a) / sizeof(a[0])); i++)
+    {
+        hp.HeapPop();
+        for (int j = 0; j < hp.HeapSize(); j++)
+        {
+            cout << hp.HeapPrint(j) << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
