@@ -13,6 +13,8 @@ public:
     void HeapPush(HDataType x);
     void HeapPop();
     int HeapSize();
+    HDataType HeapTop();
+    bool HeapEmpty();
     HDataType HeapPrint(int i);
 
 

@@ -57,7 +57,7 @@ void Heap::AdjustDown(HDataType *data, int size)
     int child = parent * 2 + 1;
     while (child < size)
     {
-        if (child + 1 < size &&_data[child + 1] < _data[child])
+        if (child + 1 < size && _data[child + 1] < _data[child])
         {
             child++;
         }
@@ -84,4 +84,14 @@ void Heap::HeapPop()
 int Heap::HeapSize()
 {
     return _size;
+}
+
+HDataType Heap::HeapTop()
+{
+    return _data[0];
+}
+
+bool Heap::HeapEmpty()
+{
+    return _size == 0;
 }
