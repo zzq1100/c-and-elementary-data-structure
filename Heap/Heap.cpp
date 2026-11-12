@@ -57,13 +57,13 @@ void Heap::AdjustDown(HDataType *data, int size)
     int child = parent * 2 + 1;
     while (child < size)
     {
-        if (child + 1 < size && _data[child + 1] < _data[child])
+        if (child + 1 < size && data[child + 1] < data[child])
         {
             child++;
         }
-        if (_data[parent] > _data[child])
+        if (data[parent] > data[child])
         {
-            swap(_data[parent], _data[child]);
+            swap(data[parent], data[child]);
             parent = child;
             child = parent * 2 + 1;
         }
