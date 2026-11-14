@@ -33,6 +33,39 @@ void Heap::AdjustUp(HDataType *data, int size)
     }
 }
 
+// 向上调整建堆：先把数组整体拷进来，再从第 2 个元素开始逐个向上调整
+// 时间复杂度 O(N*logN)，每次调整都是沿着一条路径走最多 logN 步
+void Heap::HeapInit(HDataType *a, int n)
+{
+    if (a == nullptr || n <= 0)
+    {
+        return;
+    }
+
+    if (n > _capacity)
+    {
+        HDataType *newdata = (HDataType *)realloc(_data, sizeof(HDataType) * n);
+        if (newdata == nullptr)
+        {
+            return;
+        }
+        _data = newdata;
+        _capacity = n;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        _data[i] = a[i];
+    }
+    _size = n;
+
+    // 从下标 1 开始，每个元素都向上调整一次，最终整棵完全二叉树构成小根堆
+    for (int i = 1; i < _size; i++)
+    {
+        AdjustUp(_data, i);
+    }
+}
+
 void Heap::HeapPush(HDataType x)
 {
     if (_size == _capacity)

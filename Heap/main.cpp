@@ -28,7 +28,22 @@ int main()
         cout << endl;
     }
 
+    cout << "---- 向上调整建堆（AdjustUp）----" << endl;
+    Heap hp2;
+    hp2.HeapInit(a, n);
+    for (int i = 0; i < n; i++)
+    {
+        cout << hp2.HeapPrint(i) << " ";
+    }
+    cout << endl;
 
+    cout << "---- 依次出堆（小根堆 -> 升序）----" << endl;
+    while (!hp2.HeapEmpty())
+    {
+        cout << hp2.HeapTop() << " ";
+        hp2.HeapPop();
+    }
+    cout << endl;
 
     return 0;
 }

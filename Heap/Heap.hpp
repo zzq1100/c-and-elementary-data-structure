@@ -38,6 +38,7 @@ public:
     Heap();
     ~Heap();
 
+    void HeapInit(HDataType *a, int n); // 向上调整建堆（用 AdjustUp）
     void HeapPush(HDataType x);
     void HeapPop();
     int HeapSize();
