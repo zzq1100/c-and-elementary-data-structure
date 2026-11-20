@@ -79,5 +79,5 @@ void testUnionFindSet()
     std::cout << "Root of 3: " << ufs.findRoot(3) << std::endl; // Should print the root of the set containing 3
     std::cout << "Root of 6: " << ufs.findRoot(6) << std::endl; // Should print the root of the set containing 6
 
-    std::cout << "Number of disjoint sets: " << ufs.setCount(0) << std::endl; // Should print the number of disjoint sets
+    std::cout << "Number of disjoint sets: " << ufs.setCount() << std::endl; // Should print the number of disjoint sets
 }
