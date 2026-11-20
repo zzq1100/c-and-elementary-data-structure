@@ -2,6 +2,9 @@
 
 #include <vector>
 #include <map>
+#include <climits>  // INT_MAX
+#include <cstddef>  // std::size_t
+
 
 
 namespace matrix
@@ -10,7 +13,7 @@ namespace matrix
     class Graph
     {
     public:
-        Graph(const V* a, size_t n)
+        Graph(const V* a, std::size_t n)
         {
             _vertexs.reserve(n);
             for (int i = 0; i < n; ++i)
@@ -40,15 +43,15 @@ namespace matrix
             if (i != -1 && j != -1)
             {
                 _matrix[i][j] = w;
-                if (!Direction)
+                if (Direction == false)
                 {
                     _matrix[j][i] = w;
                 }
             }
         }
     private:
-        vector<V> _vertexs;        // 顶点集合
-        map<V, int> _indexMap;     // 顶点索引映射
-        vector<vector<W>> _matrix; // 邻接矩阵
+        std::vector<V> _vertexs;        // 顶点集合
+        std::map<V, int> _indexMap;     // 顶点索引映射
+        std::vector<std::vector<W>> _matrix; // 邻接矩阵
     };
 } 
