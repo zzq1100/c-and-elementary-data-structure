@@ -2,10 +2,9 @@
 
 #include <vector>
 #include <map>
-#include <climits>  // INT_MAX
-#include <cstddef>  // std::size_t
-
-
+#include <climits> // INT_MAX
+#include <cstddef> // std::size_t
+#include <stdexcept>
 
 namespace matrix
 {
@@ -13,7 +12,7 @@ namespace matrix
     class Graph
     {
     public:
-        Graph(const V* a, std::size_t n)
+        Graph(const V *a, std::size_t n)
         {
             _vertexs.reserve(n);
             for (int i = 0; i < n; ++i)
@@ -25,18 +24,18 @@ namespace matrix
             for (int i = 0; i < _matrix.size(); ++i)
             {
                 _matrix[i].resize(n, MAX_W);
-            }  
+            }
         }
-        int GetVertexIndex(const V& v) const
+        int GetVertexIndex(const V &v) const
         {
             auto it = _indexMap.find(v);
             if (it != _indexMap.end())
             {
                 return it->second;
-            } 
+            }
             return -1;
         }
-        void AddEdge(const V& v1, const V& v2, W w)
+        void AddEdge(const V &v1, const V &v2, W w)
         {
             int i = GetVertexIndex(v1);
             int j = GetVertexIndex(v2);
@@ -49,9 +48,84 @@ namespace matrix
                 }
             }
         }
+
     private:
-        std::vector<V> _vertexs;        // 顶点集合
-        std::map<V, int> _indexMap;     // 顶点索引映射
+        std::vector<V> _vertexs;             // 顶点集合
+        std::map<V, int> _indexMap;          // 顶点索引映射
         std::vector<std::vector<W>> _matrix; // 邻接矩阵
     };
-} 
+}
+
+namespace LinkTable
+{
+    template <class W>
+    struct LinkEdge
+    {
+        int _srcIndex;
+        int _dstIndex;
+        W _w;
+        LinkEdge<W> *_next;
+        LinkEdge(const W &w)
+            : _srcIndex(-1), _dstIndex(-1), _w(w), _next(nullptr)
+        {
+        }
+    };
+    template <class V, class W, bool Direction = false>
+    class Graph
+    {
+        typedef LinkEdge<W> Edge;
+
+    public:
+        Graph(const V *vertexs, size_t n)
+        {
+            _vertexs.reserve(n);
+            for (size_t i = 0; i < n; ++i)
+            {
+                _vertexs.push_back(vertexs[i]);
+                _vIndexMap[vertexs[i]] = i;
+            }
+        }
+        _linkTable.resize(n, nullptr);
+        size_t GetVertexIndex(const V &v)
+        {
+            auto ret = _vIndexMap.find(v);
+            if (ret != _vIndexMap.end())
+            {
+                return ret->second;
+            }
+            else
+            {
+                throw invalid_argument("不存在的顶点");
+                return -1;
+            }
+        }
+        void AddEdge(const V &src, const V &dst, const W &w)
+        {
+            size_t srcindex = GetVertexIndex(src);
+            size_t dstindex = GetVertexIndex(dst);
+            // 0 1
+            Edge *sd_edge = new Edge(w);
+            sd_edge->_srcIndex = srcindex;
+            sd_edge->_dstIndex = dstindex;
+            sd_edge->_next = _linkTable[srcindex];
+            _linkTable[srcindex] = sd_edge;
+            // 1 0
+            // 无向图
+            if (Direction == false)
+            {
+                Edge *ds_edge = new Edge(w);
+                ds_edge->_srcIndex = dstindex;
+                ds_edge->_dstIndex = srcindex;
+                ds_edge->_next = _linkTable[dstindex];
+                _linkTable[dstindex] = ds_edge;
+            }
+        }
+
+    private:
+        map<string, int> _vIndexMap;
+        vector<V> _vertexs;
+        // 顶点集合
+        vector<Edge *> _linkTable;
+        // 边的集合的临接表
+    };
+}

@@ -16,6 +16,15 @@ public:
         {
             root = _ufs[root];
         }
+
+        // 路径压缩
+        while (_ufs[x] >= 0)
+        {
+            int parent = _ufs[x];
+            _ufs[x] = root;
+            x = parent;
+        }
+
         return root;
     }
 
