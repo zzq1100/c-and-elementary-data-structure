@@ -5,6 +5,7 @@
 #include <climits> // INT_MAX
 #include <cstddef> // std::size_t
 #include <stdexcept>
+#include <queue>
 
 namespace matrix
 {
@@ -49,6 +50,36 @@ namespace matrix
             }
         }
 
+        void BFS(const V& startVertex)
+        {
+            int startIndex = GetVertexIndex(startVertex);
+
+            std::vector<bool> visited(_vertexs.size(), false);
+            std::queue<int> queue;
+
+            queue.push(startIndex);
+            visited[startIndex] = true;
+
+            int n = _vertexs.size();
+
+            while (!queue.empty())
+            {
+                int front = queue.front();
+                queue.pop();
+                std::cout << front << ":" << _vertexs[front] << std::endl;
+
+                for (int i = 0; i < n; ++i)
+                {
+                    if (_matrix[front][i] != MAX_W && !visited[i])
+                    {
+                        visited[i] = true;
+                        queue.push(i);
+                    }
+                }
+            }
+            
+        }
+
     private:
         std::vector<V> _vertexs;             // 顶点集合
         std::map<V, int> _indexMap;          // 顶点索引映射
@@ -84,8 +115,9 @@ namespace LinkTable
                 _vertexs.push_back(vertexs[i]);
                 _vIndexMap[vertexs[i]] = i;
             }
+            _linkTable.resize(n, nullptr);
         }
-        _linkTable.resize(n, nullptr);
+        
         size_t GetVertexIndex(const V &v)
         {
             auto ret = _vIndexMap.find(v);
@@ -96,7 +128,6 @@ namespace LinkTable
             else
             {
                 throw invalid_argument("不存在的顶点");
-                return -1;
             }
         }
         void AddEdge(const V &src, const V &dst, const W &w)
@@ -122,10 +153,8 @@ namespace LinkTable
         }
 
     private:
-        map<string, int> _vIndexMap;
-        vector<V> _vertexs;
-        // 顶点集合
-        vector<Edge *> _linkTable;
-        // 边的集合的临接表
+        map<V, int> _vIndexMap;    // 顶点值 → 下标
+        vector<V> _vertexs;             // 下标 → 顶点值
+        vector<Edge *> _linkTable;      // 下标 → 对应链表的头指针
     };
 }
