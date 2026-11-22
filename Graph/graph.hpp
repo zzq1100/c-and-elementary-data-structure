@@ -1,11 +1,15 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <map>
 #include <climits> // INT_MAX
 #include <cstddef> // std::size_t
 #include <stdexcept>
 #include <queue>
+#include <string>
+
+using namespace std;
 
 namespace matrix
 {
@@ -16,13 +20,13 @@ namespace matrix
         Graph(const V *a, std::size_t n)
         {
             _vertexs.reserve(n);
-            for (int i = 0; i < n; ++i)
+            for (size_t i = 0; i < n; ++i)
             {
                 _vertexs.push_back(a[i]);
                 _indexMap[a[i]] = i;
             }
             _matrix.resize(n);
-            for (int i = 0; i < _matrix.size(); ++i)
+            for (size_t i = 0; i < _matrix.size(); ++i)
             {
                 _matrix[i].resize(n, MAX_W);
             }
@@ -153,7 +157,7 @@ namespace LinkTable
         }
 
     private:
-        map<V, int> _vIndexMap;    // 顶点值 → 下标
+        map<V, int> _vIndexMap;         // 顶点值 → 下标
         vector<V> _vertexs;             // 下标 → 顶点值
         vector<Edge *> _linkTable;      // 下标 → 对应链表的头指针
     };
