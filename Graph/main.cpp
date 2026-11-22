@@ -11,8 +11,8 @@ void TestGraphDBFS()
     g1.AddEdge("张三", "王五", 200);
     g1.AddEdge("王五", "赵六", 30);
     g1.AddEdge("王五", "周七", 30);
-    g1.BFS("张三");
-    //g1.DFS("张三");
+    //g1.BFS("张三");
+    g1.DFS("张三");
 }
 
 int main()

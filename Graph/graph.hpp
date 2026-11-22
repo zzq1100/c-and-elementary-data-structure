@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <queue>
 #include <string>
+#include "UnionFindSet.hpp"
 
 using namespace std;
 
@@ -16,6 +17,8 @@ namespace matrix
     template <class V, class W, W MAX_W = INT_MAX, bool Direction = true>
     class Graph
     {
+        typedef Graph<V, W, MAX_W, Direction> Self;
+
     public:
         Graph(const V *a, std::size_t n)
         {
@@ -40,6 +43,18 @@ namespace matrix
             }
             return -1;
         }
+        void AddEdge(size_t i, size_t j, W w)
+        {
+            if (i < _vertexs.size() && j < _vertexs.size())
+            {
+                _matrix[i][j] = w;
+                if (Direction == false)
+                {
+                    _matrix[j][i] = w;
+                }
+            }
+        }
+
         void AddEdge(const V &v1, const V &v2, W w)
         {
             int i = GetVertexIndex(v1);
@@ -54,7 +69,7 @@ namespace matrix
             }
         }
 
-        void BFS(const V& startVertex)
+        void BFS(const V &startVertex)
         {
             int startIndex = GetVertexIndex(startVertex);
 
@@ -81,7 +96,81 @@ namespace matrix
                     }
                 }
             }
-            
+        }
+
+        void DFSUtil(int vertexIndex, std::vector<bool> &visited)
+        {
+            visited[vertexIndex] = true;
+            std::cout << vertexIndex << ":" << _vertexs[vertexIndex] << std::endl;
+
+            int n = _vertexs.size();
+            for (int i = 0; i < n; ++i)
+            {
+                if (_matrix[vertexIndex][i] != MAX_W && !visited[i])
+                {
+                    DFSUtil(i, visited);
+                }
+            }
+        }
+
+        void DFS(const V &startVertex)
+        {
+            int startIndex = GetVertexIndex(startVertex);
+
+            std::vector<bool> visited(_vertexs.size(), false);
+            DFSUtil(startIndex, visited);
+        }
+
+        struct Edge
+        {
+            int _srcIndex;
+            int _dstIndex;
+            W _w;
+            Edge(int src, int dst, W w)
+                : _srcIndex(src), _dstIndex(dst), _w(w)
+            {
+            }
+            bool operator>(const Edge &e1, const Edge &e2)
+            {
+                return e1._w > e2._w;
+            }
+        };
+
+        W Kruskal(Self &minTree)
+        {
+            priority_queue<Edge, std::vector<Edge>, std::greater<Edge>> pq;
+            size_t n = _vertexs.size();
+            for (size_t i = 0; i < n; ++i)
+            {
+                for (size_t j = 0; j < n; ++j)
+                {
+                    if (i < j && _matrix[i][j] != MAX_W)
+                    {
+                        pq.push(Edge(i, j, _matrix[i][j]));
+                    }
+                }
+            }
+            size_t size = 0;
+            W total = W();
+            UnionFindSet ufs(n);
+            while (!pq.empty())
+            {
+                Edge min = pq.top();
+                pq.pop();
+
+                if (!ufs.InSameSet(min._srcIndex, min._dstIndex))
+                {
+                    ufs.unionSet(min._srcIndex, min._dstIndex);
+                    minTree.AddEdge(min._srcIndex, min._dstIndex, min._w);
+                    size++;
+                    total += min._w;
+                } 
+            }
+            if (size != n - 1)
+            {
+                throw std::runtime_error("图不连通，无法生成最小生成树");
+            }
+            return total;
         }
 
     private:
@@ -121,7 +210,7 @@ namespace LinkTable
             }
             _linkTable.resize(n, nullptr);
         }
-        
+
         size_t GetVertexIndex(const V &v)
         {
             auto ret = _vIndexMap.find(v);
@@ -157,8 +246,8 @@ namespace LinkTable
         }
 
     private:
-        map<V, int> _vIndexMap;         // 顶点值 → 下标
-        vector<V> _vertexs;             // 下标 → 顶点值
-        vector<Edge *> _linkTable;      // 下标 → 对应链表的头指针
+        map<V, int> _vIndexMap;    // 顶点值 → 下标
+        vector<V> _vertexs;        // 下标 → 顶点值
+        vector<Edge *> _linkTable; // 下标 → 对应链表的头指针
     };
 }

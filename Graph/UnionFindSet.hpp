@@ -47,6 +47,11 @@ public:
         }
     }
 
+    bool InSameSet(int x, int y)
+    {
+        return findRoot(x) == findRoot(y);
+    }
+
     // 统计所有集合的数量。
     int setCount() const
     {
